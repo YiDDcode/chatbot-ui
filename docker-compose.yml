@@ -3,8 +3,6 @@ version: '3.6'
 name: chatbot-ui
 services:
   chatbot-ui:
-    labels:
-        dev.okteto.com/private: "true"
     build: .
     ports:
       - 3000:3000
