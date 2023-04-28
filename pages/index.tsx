@@ -864,6 +864,7 @@ export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   /** only login user */
+  /*
   const session = await getServerSession(context.req, context.res, authOptions)
   if (!session) {
     return {
@@ -873,6 +874,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
   }
+  */
 
   const defaultModelId =
     (process.env.DEFAULT_MODEL &&
