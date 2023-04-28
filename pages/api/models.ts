@@ -10,7 +10,7 @@ const handler = async (req: Request): Promise<Response> => {
     const { key } = (await req.json()) as {
       key: string;
     };
-
+    
     const response = await fetch(`${OPENAI_API_HOST}/v1/models`, {
       headers: {
         'Content-Type': 'application/json',
