@@ -10,8 +10,11 @@ import { ChatFolders } from '../Folders/Chat/ChatFolders';
 import { Search } from '../Sidebar/Search';
 import { ChatbarSettings } from './ChatbarSettings';
 import { Conversations } from './Conversations';
+import {UserInfo} from './UserInfo';
+import { User } from '@/types/user';
 
 interface Props {
+  user: User | null;
   loading: boolean;
   conversations: Conversation[];
   lightMode: 'light' | 'dark';
@@ -41,6 +44,7 @@ interface Props {
 }
 
 export const Chatbar: FC<Props> = ({
+  user,
   loading,
   conversations,
   lightMode,
@@ -214,6 +218,7 @@ export const Chatbar: FC<Props> = ({
         onPluginKeyChange={onPluginKeyChange}
         onClearPluginKey={onClearPluginKey}
       />
+      <UserInfo user={user} />
     </div>
   );
 };

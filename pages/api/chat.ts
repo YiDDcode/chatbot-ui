@@ -5,12 +5,27 @@ import tiktokenModel from '@dqbd/tiktoken/encoders/cl100k_base.json';
 import { Tiktoken, init } from '@dqbd/tiktoken/lite/init';
 // @ts-expect-error
 import wasm from '../../node_modules/@dqbd/tiktoken/lite/tiktoken_bg.wasm?module';
+import { PrismaClient } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+
+// const prisma = new PrismaClient()
 
 export const config = {
   runtime: 'edge',
 };
 
 const handler = async (req: Request): Promise<Response> => {
+  
+  /*const session = await getServerSession(req, res, authOptions)
+  if (!session) {
+    // Not Signed in
+    //res.status(401).json({ message: "You must be logged in." });
+    return new Response('You must be logged in.', { status: 401 });
+  } 
+  */
+
   try {
     const { model, messages, key, prompt } = (await req.json()) as ChatBody;
 
@@ -43,6 +58,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     encoding.free();
+    //TODO: 减去积分 
 
     const stream = await OpenAIStream(model, promptToSend, key, messagesToSend);
 

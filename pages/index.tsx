@@ -54,7 +54,7 @@ const Home: React.FC<HomeProps> = ({
   const { t } = useTranslation('chat');
 
   // STATE ----------------------------------------------
-
+  const [user, setUser] = useState(null);
   const [apiKey, setApiKey] = useState<string>('');
   const [pluginKeys, setPluginKeys] = useState<PluginKey[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -334,6 +334,28 @@ const Home: React.FC<HomeProps> = ({
     setModels(data);
     setModelError(null);
   };
+
+  const fetchUser = async () => {
+    const response = await fetch('/api/user/me', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (error) {
+      console.error("get user info error",error);
+      return
+    }
+    if (data && !data.user) {
+      //not login
+      return
+    }
+    setUser(data.user);
+  }
 
   // BASIC HANDLERS --------------------------------------------
 
@@ -654,6 +676,10 @@ const Home: React.FC<HomeProps> = ({
     }
   }, [apiKey]);
 
+  useEffect(() =>{
+    fetchUser();
+  }, []);
+
   // ON LOAD --------------------------------------------
 
   useEffect(() => {
@@ -760,6 +786,7 @@ const Home: React.FC<HomeProps> = ({
             {showSidebar ? (
               <div>
                 <Chatbar
+                  user={user}
                   loading={messageIsStreaming}
                   conversations={conversations}
                   lightMode={lightMode}
